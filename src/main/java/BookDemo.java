@@ -1,10 +1,12 @@
 import command.Commands;
 import exception.AuthorNotFoundException;
 import model.*;
+
 import storage.AuthorStorage;
 import storage.BookStorage;
 import storage.UserStorage;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class BookDemo implements Commands {
@@ -102,11 +104,24 @@ public class BookDemo implements Commands {
                 case PRINT_ALL_AUTHORS:
                     authorStorage.print();
                     break;
+                case DOWNLOAD_BOOKS_EXCEL:
+                    downloadBooksExcel();
+                    break;
                 default:
                     System.out.println("Invalid Command");
             }
         }
 
+    }
+
+    private static void downloadBooksExcel() {
+        System.out.println("Please input file location");
+        String fileDir = scanner.nextLine();
+        try {
+            bookStorage.writeBooksToExcel(fileDir);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void register() {
@@ -161,7 +176,9 @@ public class BookDemo implements Commands {
                 case PRINT_ALL_AUTHORS:
                     authorStorage.print();
                     break;
-
+                case DOWNLOAD_BOOKS_EXCEL:
+                    downloadBooksExcel();
+                    break;
                 default:
                     System.out.println("Invalid Command");
             }
